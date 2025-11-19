@@ -1,133 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MAC Wellbeing Center</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-        }
-        header {
-            background: #003366;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        nav {
-            background: #0055a5;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .hero {
-            padding: 80px 20px;
-            background: url('https://hub.mac-eg.com/static/media/hero.133e94f85b7aba3ef38b.jpg') center/cover no-repeat;
-            color: white;
-            text-align: center;
-        }
-        .section {
-            padding: 50px 20px;
-            max-width: 1000px;
-            margin: auto;
-        }
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-        footer {
-            background: #003366;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MAC Wellbeing Center</title>
+  <style>
+    /* Basic reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;line-height:1.5;color:#223;background:#f4f6f8}
+
+    /* Header / Navbar */
+    header{background:#003366;color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+    .container{max-width:1200px;margin:0 auto;padding:0 18px}
+    .nav-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand img{height:64px;width:auto;border-radius:8px}
+    .brand h1{font-size:1.05rem;letter-spacing:0.6px}
+
+    nav{display:flex;gap:18px}
+    nav a{color:#fff;text-decoration:none;font-weight:600;padding:8px 10px;border-radius:6px}
+    nav a:hover{background:rgba(255,255,255,0.08)}
+
+    /* Mobile menu */
+    .menu-toggle{display:none;background:transparent;border:0;color:#fff;font-size:1.2rem}
+    @media (max-width:880px){
+      nav{position:fixed;right:12px;top:74px;background:#003366;border-radius:10px;padding:10px;flex-direction:column;display:none}
+      nav.show{display:flex}
+      .menu-toggle{display:block}
+    }
+
+    /* Hero — simple fading slideshow */
+    .hero{position:relative;overflow:hidden}
+    .hero .slides{height:420px;display:block;position:relative}
+    .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.02);transition:opacity 900ms ease, transform 900ms ease}
+    .slide.active{opacity:1;transform:scale(1)}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.25),rgba(0,0,0,0.45));display:flex;align-items:center;justify-content:center}
+    .hero-content{color:#fff;text-align:center;padding:24px;max-width:900px}
+    .hero h2{font-size:2rem;margin-bottom:8px}
+    .hero p{font-size:1.05rem;opacity:0.95}
+
+    /* Sections */
+    main{max-width:1200px;margin:32px auto;padding:0 18px}
+    section{margin-bottom:48px}
+    h2.section-title{color:#003366;font-size:1.5rem;margin-bottom:14px}
+
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+    .card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.06);transition:transform .18s ease,box-shadow .18s ease}
+    .card:hover{transform:translateY(-6px);box-shadow:0 12px 26px rgba(16,24,40,0.08)}
+
+    /* Resources list */
+    .resources-list{display:grid;gap:12px}
+    .resource-item{background:#fff;padding:12px;border-radius:8px;box-shadow:0 4px 12px rgba(16,24,40,0.04)}
+
+    /* Contact */
+    .contact-grid{display:grid;grid-template-columns:1fr 300px;gap:18px}
+    @media (max-width:880px){.contact-grid{grid-template-columns:1fr}}
+
+    /* Footer */
+    footer{background:#042b4a;color:#fff;padding:28px 0;margin-top:38px}
+    footer .fwrap{display:flex;justify-content:space-between;gap:16px;align-items:center}
+    footer small{opacity:0.9}
+    @media (max-width:880px){footer .fwrap{flex-direction:column;text-align:center}}
+
+    /* Fade-in on scroll */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:none}
+
+    /* Utility */
+    .muted{color:#5b6b7a}
+    .cta{display:inline-block;padding:10px 16px;background:#ff7a18;color:#fff;border-radius:8px;text-decoration:none;font-weight:700}
+  </style>
 </head>
 <body>
-    <header>
-        <img src="IMG_1356.png" alt="MAC Logo" style="height: 80px; display:block; margin:auto;" />
-        <h1>MAC Wellbeing Center</h1>
-        <p>Supporting Student Growth Through Extracurricular Activities</p>
-    </header>
 
-    <nav>
+  <header>
+    <div class="container nav-row">
+      <div class="brand">
+        <!-- local uploaded logo file path (will be transformed to URL by the system) -->
+        <img src="/mnt/data/cd55357f-58f0-4ef4-adae-466ecae8f26c.png" alt="MAC Logo" />
+        <div>
+          <h1>MAC Wellbeing Center</h1>
+          <div style="font-size:12px;color:rgba(255,255,255,0.85);margin-top:4px">Extracurriculars • Mindfulness • Community</div>
+        </div>
+      </div>
+
+      <button class="menu-toggle" aria-expanded="false" aria-label="Open menu">☰</button>
+
+      <nav id="main-nav">
         <a href="#about">About</a>
         <a href="#programs">Programs</a>
         <a href="#resources">Resources</a>
         <a href="#contact">Contact</a>
-    </nav>
+        <a class="cta" href="#programs">Join a program</a>
+      </nav>
+    </div>
+  </header>
 
-    <section class="hero">
-        <h2>Welcome to the Wellbeing Center</h2>
-        <p>Where students explore, grow, and thrive.</p>
+  <!-- HERO SLIDES -->
+  <section class="hero">
+    <div class="slides">
+      <div class="slide active" style="background-image:url('https://hub.mac-eg.com/static/media/hero.133e94f85b7aba3ef38b.jpg')"></div>
+      <div class="slide" style="background-image:url('https://via.placeholder.com/1600x600?text=Sports+%26+Fitness')"></div>
+      <div class="slide" style="background-image:url('https://via.placeholder.com/1600x600?text=Mindfulness+Workshops')"></div>
+    </div>
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <h2>Where students explore, grow, and thrive</h2>
+        <p class="muted">MAC Wellbeing Center — empowering students through extracurricular activities, wellbeing workshops and community projects.</p>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section id="about" class="reveal">
+      <h2 class="section-title">About Us</h2>
+      <p>The MAC Wellbeing Center supports students through a wide range of extracurricular activities focused on creativity, physical health and emotional wellbeing. We provide spaces, programs and mentors for students to develop skills, make friends and improve mental resilience.</p>
     </section>
 
-    <section id="about" class="section">
-        <h2>About Us</h2>
-        <p>The MAC Wellbeing Center is dedicated to supporting students through extracurricular activities designed to encourage creativity, teamwork, and emotional balance.</p>
-    </section>
-
-    <section id="programs" class="section">
-        <h2>Our Programs</h2>
-        <div class="cards">
-            <div class="card">
-                <h3>Art Club</h3>
-                <p>Creative expression through drawing, painting, and crafting.</p>
-            </div>
-            <div class="card">
-                <h3>Sports & Fitness</h3>
-                <p>Activities to build teamwork, discipline, and physical wellbeing.</p>
-            </div>
-            <div class="card">
-                <h3>Mindfulness Workshops</h3>
-                <p>Sessions on stress relief, meditation, and emotional regulation.</p>
-            </div>
+    <section id="programs" class="reveal">
+      <h2 class="section-title">Our Programs</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Art & Creativity Club</h3>
+          <p class="muted">Drawing, painting, digital design and creative projects that help students express themselves.</p>
         </div>
+        <div class="card">
+          <h3>Sports & Fitness</h3>
+          <p class="muted">Team sports, yoga and fitness sessions that build confidence and teamwork.</p>
+        </div>
+        <div class="card">
+          <h3>Mindfulness Workshops</h3>
+          <p class="muted">Guided sessions on stress management, meditation and emotional regulation.</p>
+        </div>
+        <div class="card">
+          <h3>Leadership & Clubs</h3>
+          <p class="muted">Student-led initiatives, volunteering and skills-building activities.</p>
+        </div>
+      </div>
     </section>
 
-    <section id="resources" class="section">
-        <h2>Resources</h2>
-        <p>Coming soon: guides, articles, and helpful wellbeing content.</p>
+    <section id="resources" class="reveal">
+      <h2 class="section-title">Resources</h2>
+      <div class="resources-list">
+        <div class="resource-item"><strong>Mental Health Guide</strong> — Practical tips and where to ask for support.</div>
+        <div class="resource-item"><strong>Mindfulness Exercises</strong> — Short practices to use between classes.</div>
+        <div class="resource-item"><strong>Balancing School & Activities</strong> — Time-management strategies for students.</div>
+      </div>
     </section>
 
-    <section id="contact" class="section">
-        <h2>Contact Us</h2>
-        <p>Location: Misr American College Campus</p>
+    <section id="contact" class="reveal">
+      <h2 class="section-title">Contact</h2>
+      <div class="contact-grid">
+        <div>
+          <p class="muted">Location: Misr American College Campus</p>
+          <p class="muted">To join a program or ask about events, click <a href="#programs">Join a program</a> above.</p>
+        </div>
+        <div>
+          <div style="background:#fff;padding:14px;border-radius:8px;box-shadow:0 6px 18px rgba(16,24,40,0.04)">
+            <strong>Office Hours</strong>
+            <p class="muted" style="margin-top:8px">Mon–Fri • 8:00 – 15:00</p>
+          </div>
+        </div>
+      </div>
     </section>
+  </main>
 
-    <footer>
-        <p>© 2025 MAC Wellbeing Center</p>
-    </footer>
+  <footer>
+    <div class="container fwrap">
+      <div>
+        <strong>MAC Wellbeing Center</strong>
+        <div style="margin-top:8px" class="muted">Supporting extracurricular learning & student wellbeing</div>
+      </div>
+      <div>
+        <small>© 2025 Misr American College</small>
+      </div>
+    </div>
+  </footer>
 
-<!-- Live Chat Widget (Tawk.to) -->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/691ccaa4e16d0a195034435c/1jac7f4uq';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
+  <!-- Live Chat Widget (Tawk.to) -->
+  <!-- NOTE: Make sure these domains are added in your Tawk.to Admin → Domain Restriction:
+       yyy293.github.io
+       https://yyy293.github.io
+       https://yyy293.github.io/Mac-Well-being-center/
+       Or turn domain restriction OFF. -->
+  <script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/691ccaa4e16d0a195034435c/1jac7f4uq';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
+
+  <script>
+    // Mobile menu toggle
+    const toggle = document.querySelector('.menu-toggle');
+    const nav = document.getElementById('main-nav');
+    toggle.addEventListener('click', ()=>{
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('show');
+    });
+
+    // Simple hero slideshow
+    (function(){
+      const slides = document.querySelectorAll('.slide');
+      let i=0;
+      setInterval(()=>{
+        slides[i].classList.remove('active');
+        i = (i+1) % slides.length;
+        slides[i].classList.add('active');
+      },5000);
+    })();
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add('visible');
+      });
+    },{threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  </script>
 
 </body>
 </html>
