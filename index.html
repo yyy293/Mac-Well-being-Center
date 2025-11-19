@@ -208,7 +208,7 @@
     document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
   </script>
 
-  <!-- Tawk.to chat widget -->
+  <!-- Tawk.to chat widget with auto-open -->
   <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
@@ -219,6 +219,11 @@
       s1.setAttribute('crossorigin','*');
       s0.parentNode.insertBefore(s1,s0);
     })();
+
+    // Auto-open chat window
+    Tawk_API.onLoad = function(){
+        Tawk_API.maximize();
+    };
   </script>
 
 </body>
